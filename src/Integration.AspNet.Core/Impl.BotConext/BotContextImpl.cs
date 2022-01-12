@@ -11,12 +11,16 @@ internal sealed class BotContextImpl : IBotContext
         UserState userState,
         ConversationState conversationState,
         ILoggerFactory loggerFactory,
+        IBotUserProvider botUserProvider,
+        IBotFlow botFlow,
         IServiceProvider serviceProvider)
     {
         TurnContext = turnContext;
         UserState = userState;
         ConversationState = conversationState;
         LoggerFactory = loggerFactory;
+        BotUserProvider = botUserProvider;
+        BotFlow = botFlow;
         ServiceProvider = serviceProvider;
     }
 
@@ -27,6 +31,10 @@ internal sealed class BotContextImpl : IBotContext
     public ConversationState ConversationState { get; }
 
     public ILoggerFactory LoggerFactory { get; }
+
+    public IBotUserProvider BotUserProvider { get; }
+
+    public IBotFlow BotFlow { get; }
 
     public IServiceProvider ServiceProvider { get; }
 }

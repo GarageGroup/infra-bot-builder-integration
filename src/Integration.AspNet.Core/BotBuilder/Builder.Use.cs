@@ -2,33 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Bot.Builder;
 
 namespace GGroupp.Infra.Bot.Builder;
 
+using BotMiddlewareFunc = Func<IBotContext, CancellationToken, ValueTask<Unit>>;
+
 partial class BotBuilder
 {
-    public IBotBuilder Use(Func<IBotContext, CancellationToken, ValueTask<TurnState>> middleware)
+    public IBotBuilder Use(BotMiddlewareFunc middleware)
         =>
         InnerUse(
             middleware ?? throw new ArgumentNullException(nameof(middleware)));
 
-    private BotBuilder InnerUse(Func<IBotContext, CancellationToken, ValueTask<TurnState>> middleware)
-    {
-        return new(
-            serviceProvider,
-            conversationState,
-            userState,
-            loggerFactory,
-            new List<Func<ITurnContext, CancellationToken, ValueTask<TurnState>>>(middlewares)
+    private BotBuilder InnerUse(BotMiddlewareFunc middleware)
+        =>
+        new(
+            serviceProvider: serviceProvider,
+            conversationState: conversationState,
+            userState: userState,
+            loggerFactory: loggerFactory,
+            middlewares: new List<BotMiddlewareFunc>(middlewares)
             {
-                InnerInvokeAsync
+                middleware
             });
-
-        ValueTask<TurnState> InnerInvokeAsync(ITurnContext turnContext, CancellationToken cancellationToken)
-        {
-            var botContext = new BotContextImpl(turnContext, userState, conversationState, loggerFactory, serviceProvider);
-            return middleware.Invoke(botContext, cancellationToken);
-        }
-    }
 }

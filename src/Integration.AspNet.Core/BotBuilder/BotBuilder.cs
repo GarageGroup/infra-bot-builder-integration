@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 
 namespace GGroupp.Infra.Bot.Builder;
 
+using BotMiddlewareFunc = Func<IBotContext, CancellationToken, ValueTask<Unit>>;
+
 public sealed partial class BotBuilder : IBotBuilder
 {
     internal static BotBuilder InternalCreate(
@@ -20,7 +22,7 @@ public sealed partial class BotBuilder : IBotBuilder
             conversationState: conversationState,
             userState: userState,
             loggerFactory: loggerFactory,
-            middlewares: Array.Empty<Func<ITurnContext, CancellationToken, ValueTask<TurnState>>>());
+            middlewares: Array.Empty<BotMiddlewareFunc>());
 
     private readonly IServiceProvider serviceProvider;
 
@@ -30,14 +32,14 @@ public sealed partial class BotBuilder : IBotBuilder
 
     private readonly ILoggerFactory loggerFactory;
 
-    private readonly IReadOnlyCollection<Func<ITurnContext, CancellationToken, ValueTask<TurnState>>> middlewares;
+    private readonly IReadOnlyCollection<BotMiddlewareFunc> middlewares;
 
     private BotBuilder(
         IServiceProvider serviceProvider,
         ConversationState conversationState,
         UserState userState,
         ILoggerFactory loggerFactory,
-        IReadOnlyCollection<Func<ITurnContext, CancellationToken, ValueTask<TurnState>>> middlewares)
+        IReadOnlyCollection<BotMiddlewareFunc> middlewares)
     {
         this.serviceProvider = serviceProvider;
         this.conversationState = conversationState;
