@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -15,17 +14,17 @@ internal sealed partial class BotImpl : IBot
 
     private readonly ILogger logger;
 
-    private readonly IReadOnlyCollection<Func<ITurnContext, CancellationToken, ValueTask<TurnState>>> middlewares;
+    private readonly Func<ITurnContext, CancellationToken, ValueTask<Unit>> middleware;
 
     internal BotImpl(
         ConversationState conversationState,
         UserState userState,
-        ILogger<BotImpl> logger,
-        IReadOnlyCollection<Func<ITurnContext, CancellationToken, ValueTask<TurnState>>> middlewares)
+        ILoggerFactory loggerFactory,
+        Func<ITurnContext, CancellationToken, ValueTask<Unit>> middleware)
     {
         this.conversationState = conversationState;
         this.userState = userState;
-        this.logger = logger;
-        this.middlewares = middlewares;
+        this.middleware = middleware;
+        logger = loggerFactory.CreateLogger<BotImpl>();
     }
 }
