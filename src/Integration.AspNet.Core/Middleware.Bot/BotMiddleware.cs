@@ -47,4 +47,3 @@ public static partial class BotMiddleware
         return adapter;
     }
 }
-

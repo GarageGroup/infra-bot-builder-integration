@@ -4,36 +4,35 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.Hosting;
 
 partial class BotHostBuilderExtensions
 {
-    public static IHostBuilder ConfigureBotWebHostDefaults(
-        this IHostBuilder hostBuilder,
-        Func<IBotBuilder, IBotBuilder> configureBot)
-        =>
-        InnerConfigureBotWebHostDefaults(
-            hostBuilder ?? throw new ArgumentNullException(nameof(hostBuilder)),
-            configureBot ?? throw new ArgumentNullException(nameof(configureBot)));
+    public static IHostBuilder ConfigureBotWebHostDefaults(this IHostBuilder hostBuilder, Func<IBotBuilder, IBotBuilder> configureBot)
+    {
+        _ = hostBuilder ?? throw new ArgumentNullException(nameof(hostBuilder));
+        _ = configureBot ?? throw new ArgumentNullException(nameof(configureBot));
 
-    private static IHostBuilder InnerConfigureBotWebHostDefaults(
-        IHostBuilder builder,
-        Func<IBotBuilder, IBotBuilder> configureBot)
-        =>
-        builder.ConfigureWebHostDefaults(
-            b => b.Configure(app => app.Configure(configureBot)));
+        return hostBuilder.ConfigureWebHostDefaults(b => b.Configure(Configure));
 
-    private static void Configure(this IApplicationBuilder app, Func<IBotBuilder, IBotBuilder> configureBot)
+        void Configure(IApplicationBuilder applicationBuilder)
+        {
+            _ = applicationBuilder ?? throw new ArgumentNullException(nameof(applicationBuilder));
+            InnerConfigure(applicationBuilder, configureBot);
+        }
+    }
+
+    private static void InnerConfigure(IApplicationBuilder app, Func<IBotBuilder, IBotBuilder> configureBot)
         =>
         app
         .UseWebSockets()
         .UseAuthorization(
-            _ => new())
-        .UseBot(
-            sp => sp.ResolveBot(configureBot));
+            static _ => new())
+        .InternalUseBot(
+            sp => sp.ResolveBot(configureBot))
+        .InternalUseStandardBotHealthCheck();
 
     private static IBot ResolveBot(this IServiceProvider serviceProvider, Func<IBotBuilder, IBotBuilder> configureBot)
         =>
