@@ -10,9 +10,7 @@ partial class BotBuilder
 {
     public IBot Build()
         =>
-        middlewares.Any()
-        ? new BotImpl(conversationState, userState, loggerFactory, InvokeBotAsync)
-        : EmptyBotImpl.Instance;
+        middlewares.Any() ? new BotImpl(conversationState, userState, loggerFactory, InvokeBotAsync) : EmptyBotImpl.Instance;
 
     private ValueTask<Unit> InvokeBotAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
@@ -29,16 +27,17 @@ partial class BotBuilder
 
             var botContext = new BotContextImpl(
                 turnContext: nextContext,
-                userState: userState,
-                conversationState: conversationState,
-                loggerFactory: loggerFactory,
-                botUserProvider: new BotUserProviderImpl(
-                    userState: userState,
-                    turnContext: nextContext),
                 botFlow: new BotFlowImpl(
                     turnContext: nextContext,
                     firstMiddleware: InvokeBotAsync,
                     nextMiddleware: NextAsync),
+                userState: userState,
+                conversationState: conversationState,
+                botTelemetryClient: botTelemetryClient,
+                botUserProvider: new BotUserProviderImpl(
+                    userState: userState,
+                    turnContext: nextContext),
+                loggerFactory: loggerFactory,
                 serviceProvider: serviceProvider);
 
             return middleware.Invoke(botContext, nextToken);

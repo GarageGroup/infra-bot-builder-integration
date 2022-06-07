@@ -31,8 +31,8 @@ internal sealed class BotUserProviderImpl : IBotUserProvider
 
     private async ValueTask<BotUser?> InnerGetCurrentUserAsync(CancellationToken cancellationToken)
     {
-        var user = await userDataAccessor.GetAsync(turnContext, () => default, cancellationToken).ConfigureAwait(false);
-        if(user is null)
+        var user = await userDataAccessor.GetAsync(turnContext, static () => default, cancellationToken).ConfigureAwait(false);
+        if (user is null)
         {
             return default;
         }
@@ -46,7 +46,7 @@ internal sealed class BotUserProviderImpl : IBotUserProvider
 
     private async ValueTask<Unit> InnerSetCurrentUserAsync(BotUser? user, CancellationToken cancellationToken)
     {
-        if(user is null)
+        if (user is null)
         {
             await userDataAccessor.DeleteAsync(turnContext, cancellationToken).ConfigureAwait(false);
             return default;

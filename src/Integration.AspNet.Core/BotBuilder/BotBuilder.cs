@@ -15,12 +15,14 @@ public sealed partial class BotBuilder : IBotBuilder
         IServiceProvider serviceProvider,
         ConversationState conversationState,
         UserState userState,
+        IBotTelemetryClient botTelemetryClient,
         ILoggerFactory loggerFactory)
         =>
         new(
             serviceProvider: serviceProvider,
             conversationState: conversationState,
             userState: userState,
+            botTelemetryClient: botTelemetryClient,
             loggerFactory: loggerFactory,
             middlewares: Array.Empty<BotMiddlewareFunc>());
 
@@ -30,6 +32,8 @@ public sealed partial class BotBuilder : IBotBuilder
 
     private readonly UserState userState;
 
+    private readonly IBotTelemetryClient botTelemetryClient;
+
     private readonly ILoggerFactory loggerFactory;
 
     private readonly IReadOnlyCollection<BotMiddlewareFunc> middlewares;
@@ -38,12 +42,14 @@ public sealed partial class BotBuilder : IBotBuilder
         IServiceProvider serviceProvider,
         ConversationState conversationState,
         UserState userState,
+        IBotTelemetryClient botTelemetryClient,
         ILoggerFactory loggerFactory,
         IReadOnlyCollection<BotMiddlewareFunc> middlewares)
     {
         this.serviceProvider = serviceProvider;
         this.conversationState = conversationState;
         this.userState = userState;
+        this.botTelemetryClient = botTelemetryClient;
         this.loggerFactory = loggerFactory;
         this.middlewares = middlewares;
     }

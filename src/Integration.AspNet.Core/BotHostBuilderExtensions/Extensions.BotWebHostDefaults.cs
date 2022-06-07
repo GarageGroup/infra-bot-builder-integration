@@ -40,6 +40,7 @@ partial class BotHostBuilderExtensions
             serviceProvider,
             serviceProvider.GetRequiredService<ConversationState>(),
             serviceProvider.GetRequiredService<UserState>(),
+            botTelemetryClient: serviceProvider.GetRequiredService<IBotTelemetryClient>(),
             serviceProvider.GetRequiredService<ILoggerFactory>())
         .InnerPipe(
             configureBot)
