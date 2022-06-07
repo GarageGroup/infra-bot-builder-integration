@@ -20,6 +20,7 @@ partial class BotBuilder
             serviceProvider: serviceProvider,
             conversationState: conversationState,
             userState: userState,
+            botTelemetryClient: botTelemetryClient,
             loggerFactory: loggerFactory,
             middlewares: new List<BotMiddlewareFunc>(middlewares)
             {

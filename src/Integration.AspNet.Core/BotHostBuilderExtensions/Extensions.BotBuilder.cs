@@ -1,5 +1,9 @@
 using System;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.ApplicationInsights;
+using Microsoft.Bot.Builder.Integration.ApplicationInsights.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Extensions.Hosting;
@@ -31,10 +35,19 @@ partial class BotHostBuilderExtensions
     private static void ConfigureBotBuilder(this IServiceCollection services, Func<IServiceProvider, IStorage> storageResolver)
         =>
         services
+        .AddHttpContextAccessor()
         .AddApplicationInsightsTelemetry()
+        .AddSingleton<ITelemetryInitializer, OperationCorrelationTelemetryInitializer>()
+        .AddSingleton<ITelemetryInitializer, TelemetryBotIdInitializer>()
+        .AddSingleton(ResolveBotTelemetryClient)
         .AddSingleton(storageResolver)
         .AddSingleton<ConversationState>(
             sp => new(sp.GetRequiredService<IStorage>()))
         .AddSingleton<UserState>(
             sp => new(sp.GetRequiredService<IStorage>()));
+
+    private static IBotTelemetryClient ResolveBotTelemetryClient(IServiceProvider serviceProvider)
+        =>
+        new BotTelemetryClient(
+            serviceProvider.GetRequiredService<TelemetryClient>());
 }
