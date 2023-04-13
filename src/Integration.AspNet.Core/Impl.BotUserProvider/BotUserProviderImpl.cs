@@ -41,7 +41,7 @@ internal sealed class BotUserProviderImpl : IBotUserProvider
             id: user.Id,
             mail: user.Mail,
             displayName: user.DisplayName,
-            claims: user.Claims);
+            claims: user.Claims.ToFlatArray());
     }
 
     private async ValueTask<Unit> InnerSetCurrentUserAsync(BotUser? user, CancellationToken cancellationToken)
@@ -57,7 +57,7 @@ internal sealed class BotUserProviderImpl : IBotUserProvider
             Id = user.Id,
             Mail = user.Mail,
             DisplayName = user.DisplayName,
-            Claims = new(user.Claims)
+            Claims = new(user.Claims.AsEnumerable())
         };
 
         await userDataAccessor.SetAsync(turnContext, userJson, cancellationToken).ConfigureAwait(false);
