@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <RootNamespace>GGroupp.Infra.Bot.Builder</RootNamespace>
+    <AssemblyName>GGroupp.Infra.Bot.Builder.Integration.Core</AssemblyName>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GGroupp.Infra.Bot.Builder.Core" Version="2.0.0" />
+    <PackageReference Include="GGroupp.Infra.Http.SocketsHandlerProvider.Abstractions" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.ApplicationInsights.Core" Version="4.19.3" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.19.3" />
+  </ItemGroup>
+
+</Project>

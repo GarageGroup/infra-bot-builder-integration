@@ -10,7 +10,7 @@ partial class BotImpl
 {
     public Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
     {
-        _ = turnContext ?? throw new ArgumentNullException(nameof(turnContext));
+        ArgumentNullException.ThrowIfNull(turnContext);
 
         if (cancellationToken.IsCancellationRequested)
         {

@@ -11,26 +11,38 @@ namespace Microsoft.Extensions.Hosting;
 partial class BotHostBuilderExtensions
 {
     public static IHostBuilder ConfigureBotBuilder(this IHostBuilder hostBuilder, Func<IServiceProvider, IStorage> storageResolver)
-        =>
-        InnerConfigureBotBuilder(
-            hostBuilder ?? throw new ArgumentNullException(nameof(hostBuilder)),
-            storageResolver ?? throw new ArgumentNullException(nameof(storageResolver)));
+    {
+        ArgumentNullException.ThrowIfNull(hostBuilder);
+        ArgumentNullException.ThrowIfNull(storageResolver);
+
+        return hostBuilder.ConfigureServices(
+            services => services.ConfigureBotBuilder(storageResolver));
+    }
 
     public static IHostBuilder ConfigureBotBuilder(this IHostBuilder hostBuilder, Func<IStorage> storageFactory)
-        =>
-        InnerConfigureBotBuilder(
-            hostBuilder ?? throw new ArgumentNullException(nameof(hostBuilder)),
-            storageFactory ?? throw new ArgumentNullException(nameof(storageFactory)));
+    {
+        ArgumentNullException.ThrowIfNull(hostBuilder);
+        ArgumentNullException.ThrowIfNull(storageFactory);
 
-    private static IHostBuilder InnerConfigureBotBuilder(IHostBuilder builder, Func<IServiceProvider, IStorage> storageResolver)
-        =>
-        builder.ConfigureServices(
-            services => services.ConfigureBotBuilder(storageResolver));
+        return hostBuilder.ConfigureServices(
+            services => services.ConfigureBotBuilder(InnerResolve));
 
-    private static IHostBuilder InnerConfigureBotBuilder(IHostBuilder hostBuilder, Func<IStorage> storageFactory)
-        =>
-        InnerConfigureBotBuilder(
-            hostBuilder, _ => storageFactory.Invoke());
+        IStorage InnerResolve(IServiceProvider _)
+            =>
+            storageFactory.Invoke();
+    }
+
+    public static IHostBuilder ConfigureBotBuilder(this IHostBuilder hostBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(hostBuilder);
+
+        return hostBuilder.ConfigureServices(
+            services => services.ConfigureBotBuilder(InnerCreateMemoryStorage));
+
+        static IStorage InnerCreateMemoryStorage(IServiceProvider _)
+            =>
+            new MemoryStorage();
+    }
 
     private static void ConfigureBotBuilder(this IServiceCollection services, Func<IServiceProvider, IStorage> storageResolver)
         =>

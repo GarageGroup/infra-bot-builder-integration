@@ -7,16 +7,15 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>GGroupp.Infra.Bot.Builder</RootNamespace>
-    <AssemblyName>GGroupp.Infra.Bot.Builder.Integration.AspNet.Core</AssemblyName>
-    <Version>2.1.0</Version>
+    <AssemblyName>GGroupp.Infra.Bot.Builder.Integration.Azure</AssemblyName>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="GGroupp.Infra.Bot.Builder.Integration.Core" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Core" Version="1.11.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
+    <PackageReference Include="PrimeFuncPack.Dependency.Core" Version="2.0.2" />
   </ItemGroup>
 
 </Project>

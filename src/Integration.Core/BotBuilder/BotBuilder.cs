@@ -11,21 +11,6 @@ using BotMiddlewareFunc = Func<IBotContext, CancellationToken, ValueTask<Unit>>;
 
 public sealed partial class BotBuilder : IBotBuilder
 {
-    internal static BotBuilder InternalCreate(
-        IServiceProvider serviceProvider,
-        ConversationState conversationState,
-        UserState userState,
-        IBotTelemetryClient botTelemetryClient,
-        ILoggerFactory loggerFactory)
-        =>
-        new(
-            serviceProvider: serviceProvider,
-            conversationState: conversationState,
-            userState: userState,
-            botTelemetryClient: botTelemetryClient,
-            loggerFactory: loggerFactory,
-            middlewares: Array.Empty<BotMiddlewareFunc>());
-
     private readonly IServiceProvider serviceProvider;
 
     private readonly ConversationState conversationState;
@@ -44,13 +29,13 @@ public sealed partial class BotBuilder : IBotBuilder
         UserState userState,
         IBotTelemetryClient botTelemetryClient,
         ILoggerFactory loggerFactory,
-        IReadOnlyCollection<BotMiddlewareFunc> middlewares)
+        IReadOnlyCollection<BotMiddlewareFunc>? middlewares = null)
     {
         this.serviceProvider = serviceProvider;
         this.conversationState = conversationState;
         this.userState = userState;
         this.botTelemetryClient = botTelemetryClient;
         this.loggerFactory = loggerFactory;
-        this.middlewares = middlewares;
+        this.middlewares = middlewares ?? Array.Empty<BotMiddlewareFunc>();
     }
 }

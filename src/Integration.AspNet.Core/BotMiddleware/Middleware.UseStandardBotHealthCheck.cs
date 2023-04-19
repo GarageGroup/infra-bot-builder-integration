@@ -4,22 +4,24 @@ using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.AspNetCore.Builder;
 
-partial class HealthCheckMiddleware
+partial class BotMiddleware
 {
     public static IApplicationBuilder UseStandardBotHealthCheck(this IApplicationBuilder appBuilder)
-        =>
-        InternalUseStandardBotHealthCheck(
-            appBuilder ?? throw new ArgumentNullException(nameof(appBuilder)));
+    {
+        ArgumentNullException.ThrowIfNull(appBuilder);
+        return appBuilder.InternalUseStandardBotHealthCheck();
+    }
 
     internal static IApplicationBuilder InternalUseStandardBotHealthCheck(this IApplicationBuilder appBuilder)
-        =>
-        appBuilder.Map(
+    {
+        return appBuilder.Map(
             new PathString("/health"),
             app => app.Use(_ => InvokeHealthCheckAsync));
 
-    private static Task InvokeHealthCheckAsync(HttpContext context)
-    {
-        context.Response.StatusCode = 200;
-        return context.Response.WriteAsync("Healthy", context.RequestAborted);
+        static Task InvokeHealthCheckAsync(HttpContext context)
+        {
+            context.Response.StatusCode = 200;
+            return context.Response.WriteAsync("Healthy", context.RequestAborted);
+        }
     }
 }
