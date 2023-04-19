@@ -30,8 +30,19 @@ jobs:
         -p ${{ secrets.GG_NUGET_SOURCE_USER_PASSWORD }}
         --store-password-in-clear-text
 
+    # Integration.Core.csproj
+
+    - name: Restore Integration.Core.csproj
+      run: dotnet restore ./src/*/Integration.Core.csproj
+
+    - name: Build Integration.Core.csproj
+      run: dotnet build ./src/*/Integration.Core.csproj --no-restore  -c Release
+
+    - name: Pack Integration.Core.csproj
+      run: dotnet pack ./src/*/Integration.Core.csproj --no-build -o ~/nuget  -c Release
+
     # Integration.AspNet.Core.csproj
-    
+
     - name: Restore Integration.AspNet.Core.csproj
       run: dotnet restore ./src/*/Integration.AspNet.Core.csproj
 
@@ -39,8 +50,30 @@ jobs:
       run: dotnet build ./src/*/Integration.AspNet.Core.csproj --no-restore  -c Release
 
     - name: Pack Integration.AspNet.Core.csproj
-      run: dotnet pack ./src/*/Integration.AspNet.Core.csproj --no-restore -o ~/nuget  -c Release
-    
+      run: dotnet pack ./src/*/Integration.AspNet.Core.csproj --no-build -o ~/nuget  -c Release
+
+    # Integration.Azure.csproj
+
+    - name: Restore Integration.Azure.csproj
+      run: dotnet restore ./src/*/Integration.Azure.csproj
+
+    - name: Build Integration.Azure.csproj
+      run: dotnet build ./src/*/Integration.Azure.csproj --no-restore  -c Release
+
+    - name: Pack Integration.Azure.csproj
+      run: dotnet pack ./src/*/Integration.Azure.csproj --no-build -o ~/nuget  -c Release
+
+    # Integration.Azure.Generator.csproj
+
+    - name: Restore Integration.Azure.Generator.csproj
+      run: dotnet restore ./src/*/Integration.Azure.Generator.csproj
+
+    - name: Build Integration.Azure.Generator.csproj
+      run: dotnet build ./src/*/Integration.Azure.Generator.csproj --no-restore  -c Release
+
+    - name: Pack Integration.Azure.Generator.csproj
+      run: dotnet pack ./src/*/Integration.Azure.Generator.csproj --no-build -o ~/nuget  -c Release
+
     # Push
       
     - name: Push Packages
