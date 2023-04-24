@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace GGroupp.Infra;
@@ -10,10 +11,44 @@ internal static partial class SourceGeneratorExtensions
 
     private const string ResolverStandardStart = "Use";
 
-    private static string BuildBotFunctionName(this IMethodSymbol methodSymbol)
+    private static void ValidateOrThrow(this IMethodSymbol methodSymbol)
+    {
+        if (methodSymbol.IsStatic is false)
+        {
+            throw methodSymbol.CreateInvalidMethodException("must be static");
+        }
+
+        if (methodSymbol.DeclaredAccessibility is not (Accessibility.Public or Accessibility.Internal))
+        {
+            throw methodSymbol.CreateInvalidMethodException("must be public or internal");
+        }
+
+        if (methodSymbol.Parameters.Any())
+        {
+            throw methodSymbol.CreateInvalidMethodException("must not have parameters");
+        }
+
+        if (methodSymbol.TypeParameters.Any())
+        {
+            throw methodSymbol.CreateInvalidMethodException("must not have generic arguments");
+        }
+
+        if (methodSymbol.IsBotDependencyType() is false)
+        {
+            throw methodSymbol.CreateInvalidMethodException("return type must be PrimeFuncPack.Dependency<IBot>");
+        }
+    }
+
+    private static string BuildHttpBotFunctionName(this IMethodSymbol methodSymbol)
     {
         var name = methodSymbol.Name.RemoveStandardStart();
-        return $"Handle{name}MessageAsync";
+        return $"HandleHttp{name}MessageAsync";
+    }
+
+    private static string BuildServiceBusBotFunctionName(this IMethodSymbol methodSymbol)
+    {
+        var name = methodSymbol.Name.RemoveStandardStart();
+        return $"HandleServiceBus{name}MessageAsync";
     }
 
     private static string RemoveStandardStart(this string name)

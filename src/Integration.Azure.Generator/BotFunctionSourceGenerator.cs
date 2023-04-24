@@ -1,3 +1,4 @@
+using System;
 using Microsoft.CodeAnalysis;
 
 namespace GGroupp.Infra;
@@ -14,8 +15,20 @@ internal sealed class BotFunctionSourceGenerator : ISourceGenerator
 
             foreach (var resolverType in providerType.ResolverTypes)
             {
-                var functionSourceCode = providerType.BuildFunctionSourceCode(resolverType);
-                context.AddSource($"{providerType.TypeName}.{resolverType.FunctionMethodName}.g.cs", functionSourceCode);
+                if (resolverType is HttpBotResolverMetadata httpBotResolver)
+                {
+                    var httpFunctionSourceCode = providerType.BuildHttpFunctionSourceCode(httpBotResolver);
+                    context.AddSource($"{providerType.TypeName}.{resolverType.FunctionMethodName}.g.cs", httpFunctionSourceCode);
+                }
+                else if (resolverType is ServiceBusBotResolverMetadata serviceBusBotResolver)
+                {
+                    var httpFunctionSourceCode = providerType.BuildServiceBusFunctionSourceCode(serviceBusBotResolver);
+                    context.AddSource($"{providerType.TypeName}.{resolverType.FunctionMethodName}.g.cs", httpFunctionSourceCode);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"An unexpected bot metadata type: {resolverType.GetType().FullName}");
+                }
             }
         }
     }

@@ -4,7 +4,7 @@ namespace GGroupp.Infra;
 
 partial class BotFunctionBuilder
 {
-    internal static string BuildFunctionSourceCode(this BotFunctionProviderMetadata provider, BotResolverMetadata resolver)
+    internal static string BuildHttpFunctionSourceCode(this BotFunctionProviderMetadata provider, HttpBotResolverMetadata resolver)
         =>
         new SourceBuilder(
             provider.Namespace)
@@ -22,8 +22,7 @@ partial class BotFunctionBuilder
             $"public static Task<HttpResponseData> {resolver.FunctionMethodName}(")
         .BeginArguments()
         .AppendCodeLine(
-            $"{resolver.BuildHttpTriggerAttributeSourceCode()} HttpRequestData request,")
-        .AppendCodeLine(
+            $"{resolver.BuildHttpTriggerAttributeSourceCode()} HttpRequestData request,",
             "CancellationToken cancellationToken)")
         .EndArguments()
         .BeginLambda()
@@ -33,7 +32,7 @@ partial class BotFunctionBuilder
         .EndCodeBlock()
         .Build();
 
-    private static string BuildHttpTriggerAttributeSourceCode(this BotResolverMetadata resolver)
+    private static string BuildHttpTriggerAttributeSourceCode(this HttpBotResolverMetadata resolver)
     {
         var authorizationLevelSourceCode = resolver.GetAuthorizationLevelSourceCode();
         var builder = new StringBuilder("[HttpTrigger(").Append(authorizationLevelSourceCode).Append(", \"POST\"");
@@ -46,7 +45,7 @@ partial class BotFunctionBuilder
         return builder.Append(")]").ToString();
     }
 
-    private static string GetAuthorizationLevelSourceCode(this BotResolverMetadata resolver)
+    private static string GetAuthorizationLevelSourceCode(this HttpBotResolverMetadata resolver)
         =>
         resolver.AuthorizationLevel switch
         {
