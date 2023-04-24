@@ -17,7 +17,7 @@ internal static partial class SourceGeneratorExtensions
 
     private static BotFunctionProviderMetadata? GetFunctionMetadata(INamedTypeSymbol typeSymbol)
     {
-        var resolverTypes = typeSymbol.GetMembers().OfType<IMethodSymbol>().Select(GetResolverMetadata).NotNull().ToArray();
+        var resolverTypes = typeSymbol.GetMembers().OfType<IMethodSymbol>().SelectMany(GetResolvers).NotNull().ToArray();
         if (resolverTypes.Any() is false)
         {
             return null;
@@ -33,53 +33,69 @@ internal static partial class SourceGeneratorExtensions
             typeName: typeSymbol.Name + "BotFunction",
             providerType: typeSymbol.GetDisplayedData(),
             resolverTypes: resolverTypes);
+
+        static IEnumerable<BotResolverMetadata> GetResolvers(IMethodSymbol methodSymbol)
+            =>
+            new BotResolverMetadata?[]
+            {
+                GetHttpResolverMetadata(methodSymbol),
+                GetServiceBusResolverMetadata(methodSymbol)
+            }
+            .NotNull();
     }
 
-    private static BotResolverMetadata? GetResolverMetadata(IMethodSymbol methodSymbol)
+    private static HttpBotResolverMetadata? GetHttpResolverMetadata(IMethodSymbol methodSymbol)
     {
-        var functionAttribute = methodSymbol.GetAttributes().FirstOrDefault(IsFunctionAttribute);
+        var functionAttribute = methodSymbol.GetAttributes().FirstOrDefault(IsHttpBotFunctionAttribute);
         if (functionAttribute is null)
         {
             return null;
         }
 
-        if (methodSymbol.IsStatic is false)
-        {
-            throw methodSymbol.CreateInvalidMethodException("must be static");
-        }
-
-        if (methodSymbol.DeclaredAccessibility is not (Accessibility.Public or Accessibility.Internal))
-        {
-            throw methodSymbol.CreateInvalidMethodException("must be public or internal");
-        }
-
-        if (methodSymbol.Parameters.Any())
-        {
-            throw methodSymbol.CreateInvalidMethodException("must not have parameters");
-        }
-
-        if (methodSymbol.TypeParameters.Any())
-        {
-            throw methodSymbol.CreateInvalidMethodException("must not have generic arguments");
-        }
-
-        if (methodSymbol.IsBotDependencyType() is false)
-        {
-            throw methodSymbol.CreateInvalidMethodException("return type must be PrimeFuncPack.Dependency<IBot>");
-        }
+        methodSymbol.ValidateOrThrow();
 
         var name = methodSymbol.Name.RemoveStandardStart();
 
         return new(
             resolverMethodName: methodSymbol.Name,
-            functionMethodName: methodSymbol.BuildBotFunctionName(),
+            functionMethodName: methodSymbol.BuildHttpBotFunctionName(),
             functionName: functionAttribute.GetAttributeValue(0)?.ToString() ?? string.Empty,
             functionRoute: functionAttribute.GetAttributeValue(1)?.ToString(),
             authorizationLevel: functionAttribute.GetAuthorizationLevel());
 
-        static bool IsFunctionAttribute(AttributeData attributeData)
+        static bool IsHttpBotFunctionAttribute(AttributeData attributeData)
             =>
-            attributeData.AttributeClass?.IsType(DefaultNamespace, "BotFunctionAttribute") is true;
+            attributeData.AttributeClass?.IsType(DefaultNamespace, "HttpBotFunctionAttribute") is true;
+    }
+
+    private static ServiceBusBotResolverMetadata? GetServiceBusResolverMetadata(IMethodSymbol methodSymbol)
+    {
+        var functionAttribute = methodSymbol.GetAttributes().FirstOrDefault(IsServiceBusBotFunctionAttribute);
+        if (functionAttribute is null)
+        {
+            return null;
+        }
+
+        methodSymbol.ValidateOrThrow();
+
+        var name = methodSymbol.Name.RemoveStandardStart();
+
+        var queueName = functionAttribute.GetAttributeValue(1)?.ToString();
+        if (string.IsNullOrEmpty(queueName))
+        {
+            throw methodSymbol.CreateInvalidMethodException("queue name must be specified");
+        }
+
+        return new(
+            resolverMethodName: methodSymbol.Name,
+            functionMethodName: methodSymbol.BuildServiceBusBotFunctionName(),
+            functionName: functionAttribute.GetAttributeValue(0)?.ToString() ?? string.Empty,
+            queueName: queueName ?? string.Empty,
+            connection: functionAttribute.GetAttributeValue(2)?.ToString());
+
+        static bool IsServiceBusBotFunctionAttribute(AttributeData attributeData)
+            =>
+            attributeData.AttributeClass?.IsType(DefaultNamespace, "ServiceBusBotFunctionAttribute") is true;
     }
 
     private static bool IsBotDependencyType(this IMethodSymbol resolverMethod)

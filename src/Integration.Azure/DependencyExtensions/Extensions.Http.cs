@@ -9,7 +9,7 @@ using PrimeFuncPack;
 
 namespace GGroupp.Infra;
 
-public static class BotFuncDependencyExtensions
+partial class BotFuncDependencyExtensions
 {
     public static Task<HttpResponseData> RunBotFunctionAsync(
         this Dependency<IBot> dependency, HttpRequestData request, CancellationToken cancellationToken = default)

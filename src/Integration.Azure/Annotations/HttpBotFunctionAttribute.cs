@@ -4,9 +4,9 @@ using Microsoft.Azure.Functions.Worker;
 namespace GGroupp.Infra;
 
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class BotFunctionAttribute : Attribute
+public sealed class HttpBotFunctionAttribute : Attribute
 {
-    public BotFunctionAttribute(string name, string route = "messages")
+    public HttpBotFunctionAttribute(string name, string route = "messages")
     {
         Name = name ?? string.Empty;
         Route = route ?? string.Empty;
