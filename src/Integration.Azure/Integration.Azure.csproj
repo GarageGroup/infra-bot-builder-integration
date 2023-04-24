@@ -8,7 +8,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>GGroupp.Infra.Bot.Builder</RootNamespace>
     <AssemblyName>GGroupp.Infra.Bot.Builder.Integration.Azure</AssemblyName>
-    <Version>0.1.0-build.2</Version>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
