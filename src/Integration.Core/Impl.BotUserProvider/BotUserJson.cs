@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 
 internal sealed record class BotUserJson
 {

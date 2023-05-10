@@ -2,7 +2,7 @@ using System;
 using Microsoft.Bot.Builder;
 using Microsoft.Extensions.Logging;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 
 internal sealed class BotContextImpl : IBotContext
 {

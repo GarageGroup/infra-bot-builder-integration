@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Extensions.Logging;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 
 internal sealed partial class BotImpl : IBot
 {
@@ -16,15 +16,23 @@ internal sealed partial class BotImpl : IBot
 
     private readonly Func<ITurnContext, CancellationToken, ValueTask<Unit>> middleware;
 
+    private readonly IStorageLockSupplier? lockSupplier;
+
+    private readonly string? lockingMessage;
+
     internal BotImpl(
         ConversationState conversationState,
         UserState userState,
         ILoggerFactory loggerFactory,
-        Func<ITurnContext, CancellationToken, ValueTask<Unit>> middleware)
+        Func<ITurnContext, CancellationToken, ValueTask<Unit>> middleware,
+        IStorageLockSupplier? lockSupplier,
+        string? lockingMessage)
     {
         this.conversationState = conversationState;
         this.userState = userState;
         this.middleware = middleware;
         logger = loggerFactory.CreateLogger<BotImpl>();
+        this.lockSupplier = lockSupplier;
+        this.lockingMessage = lockingMessage;
     }
 }

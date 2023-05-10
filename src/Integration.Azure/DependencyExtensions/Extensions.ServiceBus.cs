@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using GGroupp.Infra.Bot.Builder;
+using GarageGroup.Infra.Bot.Builder;
 using Microsoft.ApplicationInsights;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Bot.Builder;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PrimeFuncPack;
 
-namespace GGroupp.Infra;
+namespace GarageGroup.Infra;
 
 partial class BotFuncDependencyExtensions
 {

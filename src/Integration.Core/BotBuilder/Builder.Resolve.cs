@@ -3,7 +3,7 @@ using Microsoft.Bot.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 partial class BotBuilder
 {
     public static BotBuilder Resolve(IServiceProvider serviceProvider)

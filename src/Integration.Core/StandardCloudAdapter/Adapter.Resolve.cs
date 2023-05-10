@@ -1,4 +1,5 @@
 using System;
+using GGroupp.Infra;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.ApplicationInsights.Core;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 
 partial class StandardCloudAdapter
 {

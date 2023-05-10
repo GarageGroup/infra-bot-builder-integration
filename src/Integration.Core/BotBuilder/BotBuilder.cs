@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 
 using BotMiddlewareFunc = Func<IBotContext, CancellationToken, ValueTask<Unit>>;
 
@@ -38,4 +39,8 @@ public sealed partial class BotBuilder : IBotBuilder
         this.loggerFactory = loggerFactory;
         this.middlewares = middlewares ?? Array.Empty<BotMiddlewareFunc>();
     }
+
+    private IStorageLockSupplier? GetStorageLockSupplier()
+        =>
+        serviceProvider.GetService<IStorage>() as IStorageLockSupplier;
 }
