@@ -23,17 +23,21 @@ partial class BotImpl
 
     private async Task InnerOnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
-        string? unlockKey = null;
+        string? unlockKey = await TryGetUnlockKeyAsync(turnContext, cancellationToken).ConfigureAwait(false);
+        if (string.IsNullOrEmpty(unlockKey) && lockSupplier is not null)
+        {
+            return;
+        }
+
         try
         {
-            unlockKey = await GetUnlockKeyAsync(turnContext, cancellationToken).ConfigureAwait(false);
             await middleware.Invoke(turnContext, cancellationToken).ConfigureAwait(false);
         }
         catch (Exception exception)
         {
             logger.LogError(exception, "Bot middleware threw an unexpected exception");
 
-            var activity = MessageFactory.Text("При выполнении бота произошла непредвиденная ошибка");
+            var activity = MessageFactory.Text(ErrorMessageDefault);
             await turnContext.SendActivityAsync(activity, cancellationToken).ConfigureAwait(false);
         }
         finally
@@ -42,29 +46,41 @@ partial class BotImpl
         }
     }
 
-    private async ValueTask<string?> GetUnlockKeyAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+    private async ValueTask<string?> TryGetUnlockKeyAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
         if (lockSupplier is null)
         {
             return null;
         }
 
-        var key = $"{turnContext.Activity?.ChannelId}/conversations/{turnContext.Activity?.Conversation?.Id}";
-        var lockStatus = await lockSupplier.LockAsync(key, cancellationToken).ConfigureAwait(false);
-
-        if (lockStatus is StorageLockStatus.Success)
+        try
         {
-            return key;
+            var key = $"{turnContext.Activity?.ChannelId}/conversations/{turnContext.Activity?.Conversation?.Id}";
+            var lockStatus = await lockSupplier.LockAsync(key, cancellationToken).ConfigureAwait(false);
+
+            if (lockStatus is StorageLockStatus.Success)
+            {
+                return key;
+            }
+
+            var lockingActivity = string.IsNullOrWhiteSpace(lockingMessage) switch
+            {
+                false => MessageFactory.Text(lockingMessage),
+                _ => MessageFactory.Text(LockingMessageDefault)
+            };
+
+            await turnContext.SendActivityAsync(lockingActivity, cancellationToken).ConfigureAwait(false);
+            return null;
         }
-
-        var lockingActivity = string.IsNullOrWhiteSpace(lockingMessage) switch
+        catch (Exception exception)
         {
-            false => MessageFactory.Text(lockingMessage),
-            _ => MessageFactory.Text("Предыдущее сообщение все еще обрабатывается...")
-        };
+            logger.LogError(exception, "Bot locking operation threw an unexpected exception");
 
-        await turnContext.SendActivityAsync(lockingActivity, cancellationToken).ConfigureAwait(false);
-        return null;
+            var activity = MessageFactory.Text(ErrorMessageDefault);
+            await turnContext.SendActivityAsync(activity, cancellationToken).ConfigureAwait(false);
+
+            return null;
+        }
     }
 
     private Task SaveChangesAsync(ITurnContext turnContext, string? unlockKey, CancellationToken cancellationToken)

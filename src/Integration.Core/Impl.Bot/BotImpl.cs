@@ -8,6 +8,10 @@ namespace GarageGroup.Infra.Bot.Builder;
 
 internal sealed partial class BotImpl : IBot
 {
+    private const string LockingMessageDefault = "Предыдущее сообщение все еще обрабатывается...";
+
+    private const string ErrorMessageDefault = "При выполнении бота произошла непредвиденная ошибка";
+
     private readonly ConversationState conversationState;
 
     private readonly UserState userState;
