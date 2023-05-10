@@ -1,4 +1,6 @@
-namespace GGroupp.Infra;
+using GGroupp;
+
+namespace GarageGroup.Infra;
 
 partial class BotFunctionBuilder
 {

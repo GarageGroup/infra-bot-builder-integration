@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Azure.Functions.Worker;
 
-namespace GGroupp.Infra;
+namespace GarageGroup.Infra;
 
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class HttpBotFunctionAttribute : Attribute

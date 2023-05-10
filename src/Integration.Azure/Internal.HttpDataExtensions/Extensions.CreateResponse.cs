@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace GGroupp.Infra;
+namespace GarageGroup.Infra;
 
 partial class HttpDataExtensions
 {

@@ -6,13 +6,13 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <RootNamespace>GGroupp.Infra.Bot.Builder</RootNamespace>
-    <AssemblyName>GGroupp.Infra.Bot.Builder.Integration.Azure</AssemblyName>
-    <Version>0.1.0</Version>
+    <RootNamespace>GarageGroup.Infra.Bot.Builder</RootNamespace>
+    <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Azure</AssemblyName>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GGroupp.Infra.Bot.Builder.Integration.Core" Version="1.0.0" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.0.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Core" Version="1.11.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.7.0" />

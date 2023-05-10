@@ -1,6 +1,6 @@
 using System.Net.Http;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 
 partial class HttpClientFactoryImpl
 {

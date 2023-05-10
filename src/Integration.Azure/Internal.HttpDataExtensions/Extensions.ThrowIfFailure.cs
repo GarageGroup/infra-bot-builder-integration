@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace GGroupp.Infra;
+namespace GarageGroup.Infra;
 
 partial class HttpDataExtensions
 {

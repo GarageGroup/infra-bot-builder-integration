@@ -1,6 +1,7 @@
 using System.Text;
+using GGroupp;
 
-namespace GGroupp.Infra;
+namespace GarageGroup.Infra;
 
 partial class BotFunctionBuilder
 {
@@ -12,7 +13,7 @@ partial class BotFunctionBuilder
             "System.Text.Json",
             "System.Threading",
             "System.Threading.Tasks",
-            "GGroupp.Infra",
+            "GarageGroup.Infra",
             "Microsoft.Azure.Functions.Worker")
         .AppendCodeLine(
             $"partial class {provider.TypeName}")

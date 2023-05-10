@@ -1,4 +1,4 @@
-namespace GGroupp.Infra;
+namespace GarageGroup.Infra;
 
 internal abstract record class BotResolverMetadata
 {

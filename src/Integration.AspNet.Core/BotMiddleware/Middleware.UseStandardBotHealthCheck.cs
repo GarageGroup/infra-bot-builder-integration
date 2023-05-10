@@ -6,17 +6,21 @@ namespace Microsoft.AspNetCore.Builder;
 
 partial class BotMiddleware
 {
-    public static IApplicationBuilder UseStandardBotHealthCheck(this IApplicationBuilder appBuilder)
+    public static TApplicationBuilder UseStandardBotHealthCheck<TApplicationBuilder>(this TApplicationBuilder appBuilder)
+        where TApplicationBuilder : IApplicationBuilder
     {
         ArgumentNullException.ThrowIfNull(appBuilder);
         return appBuilder.InternalUseStandardBotHealthCheck();
     }
 
-    internal static IApplicationBuilder InternalUseStandardBotHealthCheck(this IApplicationBuilder appBuilder)
+    internal static TApplicationBuilder InternalUseStandardBotHealthCheck<TApplicationBuilder>(this TApplicationBuilder appBuilder)
+        where TApplicationBuilder : IApplicationBuilder
     {
-        return appBuilder.Map(
+        _ = appBuilder.Map(
             new PathString("/health"),
             app => app.Use(_ => InvokeHealthCheckAsync));
+
+        return appBuilder;
 
         static Task InvokeHealthCheckAsync(HttpContext context)
         {

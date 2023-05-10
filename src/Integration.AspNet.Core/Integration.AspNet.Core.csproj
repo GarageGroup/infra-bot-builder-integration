@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <RootNamespace>GGroupp.Infra.Bot.Builder</RootNamespace>
-    <AssemblyName>GGroupp.Infra.Bot.Builder.Integration.AspNet.Core</AssemblyName>
-    <Version>2.1.0</Version>
+    <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
+    <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.AspNet.Core</AssemblyName>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GGroupp.Infra.Bot.Builder.Integration.Core" Version="1.0.0" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.0.1" />
   </ItemGroup>
 
 </Project>

@@ -8,9 +8,9 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-    <RootNamespace>GGroupp.Infra</RootNamespace>
-    <AssemblyName>GGroupp.Infra.Bot.Builder.Integration.Azure.Generator</AssemblyName>
-    <Version>0.1.0</Version>
+    <RootNamespace>GarageGroup.Infra</RootNamespace>
+    <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Azure.Generator</AssemblyName>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

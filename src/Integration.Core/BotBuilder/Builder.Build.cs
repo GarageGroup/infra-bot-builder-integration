@@ -4,13 +4,28 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 
-namespace GGroupp.Infra.Bot.Builder;
+namespace GarageGroup.Infra.Bot.Builder;
 
 partial class BotBuilder
 {
     public IBot Build()
         =>
-        middlewares.Any() ? new BotImpl(conversationState, userState, loggerFactory, InvokeBotAsync) : EmptyBotImpl.Instance;
+        InnerBuild(false, null);
+
+    public IBot Build(bool useLocking, string? lockingMessage = null)
+        =>
+        InnerBuild(useLocking, lockingMessage);
+
+    private IBot InnerBuild(bool useLocking, string? lockingMessage)
+    {
+        if (middlewares.Any() is false)
+        {
+            return EmptyBotImpl.Instance;
+        }
+
+        var lockSupplier = useLocking ? GetStorageLockSupplier() : null;
+        return new BotImpl(conversationState, userState, loggerFactory, InvokeBotAsync, lockSupplier, lockingMessage);
+    }
 
     private ValueTask<Unit> InvokeBotAsync(ITurnContext turnContext, CancellationToken cancellationToken)
     {
