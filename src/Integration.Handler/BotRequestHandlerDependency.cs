@@ -5,7 +5,7 @@ using PrimeFuncPack;
 
 namespace GarageGroup.Infra.Bot.Builder;
 
-partial class BotHandlerDependency
+public static class BotRequestHandlerDependency
 {
     public static Dependency<IBotRequestHandler> UseBotRequestHandler<TBot, TBotFrameworkHttpAdapter>(
         this Dependency<TBot, TBotFrameworkHttpAdapter> dependency)
