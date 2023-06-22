@@ -7,15 +7,13 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>GarageGroup.Infra.Bot.Builder</RootNamespace>
-    <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Azure</AssemblyName>
-    <Version>0.0.3</Version>
+    <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Handler</AssemblyName>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.0.2" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Core" Version="1.12.1" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.7.0" />
+    <PackageReference Include="GarageGroup.Infra.Handler.Core" Version="0.1.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.20.0" />
     <PackageReference Include="PrimeFuncPack.Dependency.Core" Version="2.0.2" />
     <PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="2.0.2" />
   </ItemGroup>
