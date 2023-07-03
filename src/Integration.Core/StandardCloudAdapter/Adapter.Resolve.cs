@@ -1,5 +1,4 @@
 using System;
-using GGroupp.Infra;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.ApplicationInsights.Core;

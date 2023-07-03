@@ -1,5 +1,4 @@
 using System.Net.Http;
-using GGroupp.Infra;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

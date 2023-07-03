@@ -1,5 +1,4 @@
 using System.Net.Http;
-using GGroupp.Infra;
 
 namespace GarageGroup.Infra.Bot.Builder;
 
