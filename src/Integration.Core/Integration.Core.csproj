@@ -8,15 +8,15 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>GarageGroup.Infra.Bot.Builder</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Core</AssemblyName>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Core" Version="0.0.1" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Core" Version="0.1.0" />
     <PackageReference Include="GarageGroup.Infra.Bot.Builder.Core.Lock" Version="0.0.2" />
     <PackageReference Include="GarageGroup.Infra.Http.SocketsHandlerProvider.Abstractions" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.ApplicationInsights.Core" Version="4.20.0" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.20.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.ApplicationInsights.Core" Version="4.20.1" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.20.1" />
   </ItemGroup>
 
 </Project>

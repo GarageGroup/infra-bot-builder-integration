@@ -10,7 +10,7 @@ internal sealed partial class BotImpl : IBot
 {
     private const string LockingMessageDefault = "Предыдущее сообщение все еще обрабатывается...";
 
-    private const string ErrorMessageDefault = "При выполнении бота произошла непредвиденная ошибка";
+    private const string ErrorMessageDefault = "An unexpected error occurred while running the bot";
 
     private readonly ConversationState conversationState;
 
