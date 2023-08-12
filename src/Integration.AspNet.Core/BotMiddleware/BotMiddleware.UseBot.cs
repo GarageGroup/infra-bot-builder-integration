@@ -8,7 +8,8 @@ namespace Microsoft.AspNetCore.Builder;
 
 partial class BotMiddleware
 {
-    public static TApplicationBuilder UseBot<TApplicationBuilder>(this TApplicationBuilder appBuilder, Func<IServiceProvider, IBot> botResolver)
+    public static TApplicationBuilder UseBot<TApplicationBuilder>(
+        this TApplicationBuilder appBuilder, Func<IServiceProvider, IBot> botResolver)
         where TApplicationBuilder : IApplicationBuilder
     {
         ArgumentNullException.ThrowIfNull(appBuilder);
@@ -17,7 +18,8 @@ partial class BotMiddleware
         return appBuilder.InternalUseBot(botResolver);
     }
 
-    internal static TApplicationBuilder InternalUseBot<TApplicationBuilder>(this TApplicationBuilder appBuilder, Func<IServiceProvider, IBot> botResolver)
+    internal static TApplicationBuilder InternalUseBot<TApplicationBuilder>(
+        this TApplicationBuilder appBuilder, Func<IServiceProvider, IBot> botResolver)
         where TApplicationBuilder : IApplicationBuilder
     {
         _ = appBuilder.Map(
