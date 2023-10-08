@@ -8,7 +8,9 @@ internal sealed class EmptyBotImpl : IBot
 {
     internal static readonly EmptyBotImpl Instance;
 
-    static EmptyBotImpl() => Instance = new();
+    static EmptyBotImpl()
+        =>
+        Instance = new();
 
     private EmptyBotImpl()
     {

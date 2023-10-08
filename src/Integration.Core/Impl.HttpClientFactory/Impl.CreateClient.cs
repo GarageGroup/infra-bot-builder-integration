@@ -7,6 +7,6 @@ partial class HttpClientFactoryImpl
     public HttpClient CreateClient(string name)
         =>
         new(
-            handler: socketsHttpHandlerProvider.GetOrCreate(name),
+            handler: socketsHttpHandlerProvider.GetOrCreate(name ?? string.Empty),
             disposeHandler: false);
 }

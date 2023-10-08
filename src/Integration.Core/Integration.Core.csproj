@@ -1,22 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>GarageGroup.Infra.Bot.Builder</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Core</AssemblyName>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Core" Version="0.1.0" />
-    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Core.Lock" Version="0.0.2" />
-    <PackageReference Include="GarageGroup.Infra.Http.SocketsHandlerProvider.Abstractions" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.ApplicationInsights.Core" Version="4.20.1" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.20.1" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Core" Version="0.2.0" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Core.Lock" Version="0.0.3" />
+    <PackageReference Include="GarageGroup.Infra.Http.SocketsHandlerProvider.Abstractions" Version="2.0.3" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.ApplicationInsights.Core" Version="4.21.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.21.0" />
   </ItemGroup>
 
 </Project>
