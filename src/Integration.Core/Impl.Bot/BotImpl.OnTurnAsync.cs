@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -83,19 +82,29 @@ partial class BotImpl
         }
     }
 
-    private Task SaveChangesAsync(ITurnContext turnContext, string? unlockKey, CancellationToken cancellationToken)
+    private async Task SaveChangesAsync(ITurnContext turnContext, string? unlockKey, CancellationToken cancellationToken)
     {
-        var tasks = new List<Task>
+        var states = new BotState[]
         {
-            conversationState.SaveChangesAsync(turnContext, true, cancellationToken),
-            userState.SaveChangesAsync(turnContext, true, cancellationToken)
+            conversationState,
+            userState
         };
 
-        if (string.IsNullOrEmpty(unlockKey) is false && lockSupplier is not null)
+        try
         {
-            tasks.Add(lockSupplier.UnlockAsync(unlockKey, cancellationToken));
+            await Parallel.ForEachAsync(states, InnerSaveAsync).ConfigureAwait(false);
+        }
+        finally
+        {
+            if (string.IsNullOrEmpty(unlockKey) is false && lockSupplier is not null)
+            {
+                await lockSupplier.UnlockAsync(unlockKey, cancellationToken).ConfigureAwait(false);
+            }
         }
 
-        return Task.WhenAll(tasks);
+        ValueTask InnerSaveAsync(BotState state, CancellationToken cancellationToken)
+            =>
+            new(
+                task: state.SaveChangesAsync(turnContext, true, cancellationToken));
     }
 }
