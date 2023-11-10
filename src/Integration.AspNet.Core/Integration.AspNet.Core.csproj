@@ -8,7 +8,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>Microsoft.AspNetCore.Builder</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.AspNet.Core</AssemblyName>
-    <Version>0.3.1</Version>
+    <Version>0.3.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.3.1" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.3.2" />
   </ItemGroup>
 
 </Project>

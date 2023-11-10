@@ -8,11 +8,11 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>GarageGroup.Infra.Bot.Builder</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Handler</AssemblyName>
-    <Version>0.3.1</Version>
+    <Version>0.3.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.3.1" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.3.2" />
     <PackageReference Include="GarageGroup.Infra.Handler.Core" Version="0.3.1" />
     <PackageReference Include="PrimeFuncPack.Dependency.Core" Version="2.0.2" />
     <PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="2.0.2" />
