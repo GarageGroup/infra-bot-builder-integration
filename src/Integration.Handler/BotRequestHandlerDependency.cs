@@ -1,6 +1,8 @@
 using System;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PrimeFuncPack;
 
 namespace GarageGroup.Infra.Bot.Builder;
@@ -24,6 +26,26 @@ public static class BotRequestHandlerDependency
         ArgumentNullException.ThrowIfNull(botFrameworkHttpAdapterResolver);
 
         return dependency.With(botFrameworkHttpAdapterResolver).InnerUseBotRequestHandler();
+    }
+
+    public static Dependency<IBotSignalHandler> UseBotSignalHandler<TEntityApi>(
+        this Dependency<TEntityApi> dependency, string entityName)
+        where TEntityApi : IOrchestrationEntitySignalSupplier
+    {
+        ArgumentNullException.ThrowIfNull(dependency);
+        return dependency.Map<IBotSignalHandler>(CreateHandler);
+
+        BotSignalHandler CreateHandler(IServiceProvider serviceProvider, TEntityApi entityApi)
+        {
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+            ArgumentNullException.ThrowIfNull(entityApi);
+
+            return new BotSignalHandler(
+                entityApi: entityApi,
+                entityName: entityName.OrEmpty(),
+                loggerFactory: serviceProvider.GetService<ILoggerFactory>());
+        }
+
     }
 
     private static Dependency<IBotRequestHandler> InnerUseBotRequestHandler<TBot, TBotFrameworkHttpAdapter>(
