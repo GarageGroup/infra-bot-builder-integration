@@ -41,7 +41,7 @@ partial class BotImpl
         }
         finally
         {
-            await SaveChangesAsync(turnContext, unlockKey, default).ConfigureAwait(false);
+            await SaveChangesAsync(turnContext, unlockKey, cancellationToken).ConfigureAwait(false);
         }
     }
 
