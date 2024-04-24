@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -16,15 +15,10 @@ partial class BotBuilder
         =>
         InnerBuild(useLocking, lockingMessage);
 
-    private IBot InnerBuild(bool useLocking, string? lockingMessage)
+    private BotImpl InnerBuild(bool useLocking, string? lockingMessage)
     {
-        if (middlewares.Any() is false)
-        {
-            return EmptyBotImpl.Instance;
-        }
-
         var lockSupplier = useLocking ? GetStorageLockSupplier() : null;
-        return new BotImpl(conversationState, userState, loggerFactory, InvokeBotAsync, lockSupplier, lockingMessage);
+        return new(conversationState, userState, loggerFactory, InvokeBotAsync, lockSupplier, lockingMessage);
     }
 
     private ValueTask<Unit> InvokeBotAsync(ITurnContext turnContext, CancellationToken cancellationToken)

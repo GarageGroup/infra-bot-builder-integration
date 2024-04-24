@@ -40,7 +40,7 @@ public static class BotRequestHandlerDependency
             ArgumentNullException.ThrowIfNull(serviceProvider);
             ArgumentNullException.ThrowIfNull(entityApi);
 
-            return new BotSignalHandler(
+            return new(
                 entityApi: entityApi,
                 entityName: entityName.OrEmpty(),
                 loggerFactory: serviceProvider.GetService<ILoggerFactory>());
