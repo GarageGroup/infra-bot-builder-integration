@@ -37,29 +37,35 @@ partial class BotHostBuilderExtensions
         ArgumentNullException.ThrowIfNull(hostBuilder);
 
         return hostBuilder.ConfigureServices(
-            services => services.ConfigureBotBuilder(InnerCreateMemoryStorage));
-
-        static IStorage InnerCreateMemoryStorage(IServiceProvider _)
-            =>
-            new MemoryStorage();
+            static services => services.ConfigureBotBuilder(default));
     }
 
-    private static void ConfigureBotBuilder(this IServiceCollection services, Func<IServiceProvider, IStorage> storageResolver)
-        =>
-        services
-        .AddHttpContextAccessor()
-        .AddApplicationInsightsTelemetry()
-        .AddSingleton<ITelemetryInitializer, OperationCorrelationTelemetryInitializer>()
-        .AddSingleton<ITelemetryInitializer, TelemetryBotIdInitializer>()
-        .AddSingleton(ResolveBotTelemetryClient)
-        .AddSingleton(storageResolver)
-        .AddSingleton<ConversationState>(
-            sp => new(sp.GetRequiredService<IStorage>()))
-        .AddSingleton<UserState>(
-            sp => new(sp.GetRequiredService<IStorage>()));
+    private static void ConfigureBotBuilder(this IServiceCollection services, Func<IServiceProvider, IStorage>? storageResolver)
+    {
+        _ = services
+            .AddHttpContextAccessor()
+            .AddApplicationInsightsTelemetry()
+            .AddSingleton<ITelemetryInitializer, OperationCorrelationTelemetryInitializer>()
+            .AddSingleton<ITelemetryInitializer, TelemetryBotIdInitializer>()
+            .AddSingleton<IBotTelemetryClient, BotTelemetryClient>(ResolveBotTelemetryClient);
 
-    private static IBotTelemetryClient ResolveBotTelemetryClient(IServiceProvider serviceProvider)
-        =>
-        new BotTelemetryClient(
-            serviceProvider.GetRequiredService<TelemetryClient>());
+        if (storageResolver is not null)
+        {
+            _ = services.AddSingleton(storageResolver);
+        }
+
+        _ = services.AddSingleton(ResolveConversationState).AddSingleton(ResolveUserState);
+
+        static BotTelemetryClient ResolveBotTelemetryClient(IServiceProvider serviceProvider)
+            =>
+            new(serviceProvider.GetRequiredService<TelemetryClient>());
+
+        static ConversationState ResolveConversationState(IServiceProvider serviceProvider)
+            =>
+            new(serviceProvider.GetRequiredService<IStorage>());
+
+        static UserState ResolveUserState(IServiceProvider serviceProvider)
+            =>
+            new(serviceProvider.GetRequiredService<IStorage>());
+    }
 }

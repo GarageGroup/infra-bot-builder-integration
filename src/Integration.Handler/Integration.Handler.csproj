@@ -1,22 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
     <RootNamespace>GarageGroup.Infra.Bot.Builder</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Bot.Builder.Integration.Handler</AssemblyName>
-    <Version>0.4.0</Version>
+    <Version>0.5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.4.0" />
-    <PackageReference Include="GarageGroup.Infra.Handler.Core" Version="0.3.1" />
-    <PackageReference Include="GarageGroup.Infra.Orchestration.Api.Entity.Contract" Version="0.0.1" />
-    <PackageReference Include="PrimeFuncPack.Dependency.Core" Version="2.0.2" />
-    <PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="2.0.2" />
+    <PackageReference Include="GarageGroup.Infra.Bot.Builder.Integration.Core" Version="0.5.0" />
+    <PackageReference Include="GarageGroup.Infra.Handler.Core" Version="0.6.0" />
+    <PackageReference Include="GarageGroup.Infra.Orchestration.Api.Entity.Contract" Version="0.1.0" />
+    <PackageReference Include="PrimeFuncPack.Dependency.Core" Version="2.1.0" />
+    <PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="2.0.3" />
   </ItemGroup>
 
 </Project>

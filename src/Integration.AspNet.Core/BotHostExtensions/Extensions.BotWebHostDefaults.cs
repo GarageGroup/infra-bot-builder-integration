@@ -14,12 +14,16 @@ partial class BotHostExtensions
         ArgumentNullException.ThrowIfNull(hostBuilder);
         ArgumentNullException.ThrowIfNull(botResolver);
 
-        return hostBuilder.ConfigureWebHostDefaults(b => b.Configure(Configure));
+        return hostBuilder.ConfigureWebHostDefaults(ConfigureWebHost);
 
-        void Configure(IApplicationBuilder applicationBuilder)
+        void ConfigureWebHost(IWebHostBuilder app)
+            =>
+            app.Configure(ConfigureApplication);
+
+        void ConfigureApplication(IApplicationBuilder applicationBuilder)
         {
             ArgumentNullException.ThrowIfNull(applicationBuilder);
-            applicationBuilder.UseWebSockets().InternalUseBot(botResolver).InternalUseStandardBotHealthCheck();
+            applicationBuilder.UseWebSockets().InternalUseBot(botResolver);
         }
     }
 }

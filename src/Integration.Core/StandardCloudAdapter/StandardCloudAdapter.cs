@@ -1,4 +1,3 @@
-using System.Net.Http;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -25,7 +24,7 @@ public sealed partial class StandardCloudAdapter : CloudAdapter
     {
     }
 
-    private static IHttpClientFactory? CreateHttpClientFactory(ISocketsHttpHandlerProvider? handlerProvider)
+    private static HttpClientFactoryImpl? CreateHttpClientFactory(ISocketsHttpHandlerProvider? handlerProvider)
         =>
-        handlerProvider is null ? null : new HttpClientFactoryImpl(handlerProvider);
+        handlerProvider is null ? null : new(handlerProvider);
 }

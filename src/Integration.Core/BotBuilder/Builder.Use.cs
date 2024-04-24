@@ -5,25 +5,21 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Infra.Bot.Builder;
 
-using BotMiddlewareFunc = Func<IBotContext, CancellationToken, ValueTask<Unit>>;
-
 partial class BotBuilder
 {
-    public IBotBuilder Use(BotMiddlewareFunc middleware)
-        =>
-        InnerUse(
-            middleware ?? throw new ArgumentNullException(nameof(middleware)));
+    public IBotBuilder Use(Func<IBotContext, CancellationToken, ValueTask<Unit>> middleware)
+    {
+        ArgumentNullException.ThrowIfNull(middleware);
 
-    private BotBuilder InnerUse(BotMiddlewareFunc middleware)
-        =>
-        new(
+        return new BotBuilder(
             serviceProvider: serviceProvider,
             conversationState: conversationState,
             userState: userState,
             botTelemetryClient: botTelemetryClient,
             loggerFactory: loggerFactory,
-            middlewares: new List<BotMiddlewareFunc>(middlewares)
+            middlewares: new List<Func<IBotContext, CancellationToken, ValueTask<Unit>>>(middlewares)
             {
                 middleware
             });
+    }
 }

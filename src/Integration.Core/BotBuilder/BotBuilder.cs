@@ -37,7 +37,7 @@ public sealed partial class BotBuilder : IBotBuilder
         this.userState = userState;
         this.botTelemetryClient = botTelemetryClient;
         this.loggerFactory = loggerFactory;
-        this.middlewares = middlewares ?? Array.Empty<BotMiddlewareFunc>();
+        this.middlewares = middlewares ?? [];
     }
 
     private IStorageLockSupplier? GetStorageLockSupplier()

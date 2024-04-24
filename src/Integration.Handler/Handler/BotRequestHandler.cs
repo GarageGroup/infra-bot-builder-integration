@@ -9,18 +9,8 @@ using Microsoft.Bot.Builder.Integration.AspNet.Core;
 
 namespace GarageGroup.Infra.Bot.Builder;
 
-internal sealed class BotRequestHandler : IBotRequestHandler
+internal sealed class BotRequestHandler(IBotFrameworkHttpAdapter botFrameworkHttpAdapter, IBot bot) : IBotRequestHandler
 {
-    private readonly IBotFrameworkHttpAdapter botFrameworkHttpAdapter;
-
-    private readonly IBot bot;
-
-    internal BotRequestHandler(IBotFrameworkHttpAdapter botFrameworkHttpAdapter, IBot bot)
-    {
-        this.botFrameworkHttpAdapter = botFrameworkHttpAdapter;
-        this.bot = bot;
-    }
-
     public ValueTask<Result<Unit, Failure<HandlerFailureCode>>> HandleAsync(
         BotRequestJson? input, CancellationToken cancellationToken)
     {
